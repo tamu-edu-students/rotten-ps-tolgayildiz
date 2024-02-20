@@ -1,0 +1,1 @@
+web: bundle exec rai;s servert -p $PORT
