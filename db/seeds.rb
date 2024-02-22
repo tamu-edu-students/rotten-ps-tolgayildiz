@@ -19,9 +19,17 @@ more_movies = [
   {:title => 'Nomadland', :rating => 'R',
     :release_date => '19-Feb-2021'},
   {:title => 'CODA', :rating => 'PG-13',
-    :release_date => '13-Aug-2021'}
+    :release_date => '13-Aug-2021'},
+  {:title => 'Masumiyet', :rating => 'R',
+    :release_date => '24-Oct-1997'},
+  {:title => 'Kader', :rating => 'R',
+    :release_date => '17-Nov-2006'},
+  {:title => 'Bir Zamanlar Anadoluda', :rating => 'PG-13',
+    :release_date => '23-Sep-2011'},
+  {:title => 'The Golden Glove', :rating => 'NC-17',
+    :release_date => '14-Jan-2020'}
 ]
 
 more_movies.each do |movie|
-  Movie.create!(movie)
+  Movie.create!(movie) if Movie.find_by(title: movie[:title]).nil?
 end

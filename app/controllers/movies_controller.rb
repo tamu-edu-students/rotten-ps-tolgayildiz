@@ -3,7 +3,16 @@ class MoviesController < ApplicationController
 
   # GET /movies or /movies.json
   def index
-    @movies = Movie.all
+    if session.has_key?(:lastdir) && session.has_key?(:lastsort) && !params.has_key?(:dir)
+      @movies = Movie.order("#{session[:lastsort]} #{session[:lastdir]}")
+    elsif params[:dir] == "" || !params.has_key?(:dir)
+      @movies = Movie.all
+    else
+      @movies = Movie.order("#{params[:sort]} #{params[:dir]}")
+      session[:lastdir] = params[:dir] == 'asc' ? 'desc' : 'asc'
+      session[:lastsort] = params[:sort]
+    end
+    
   end
 
   # GET /movies/1 or /movies/1.json
@@ -17,6 +26,10 @@ class MoviesController < ApplicationController
 
   # GET /movies/1/edit
   def edit
+  end
+
+  def toggle_dir
+    params[:dir] = 'asc' ? 'desc' : 'asc'
   end
 
   # POST /movies or /movies.json
@@ -55,6 +68,10 @@ class MoviesController < ApplicationController
       format.html { redirect_to movies_url, notice: "Movie was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def sorted_asc?
+    each_cons(2).all?{|p, n| (p <= n) != 1}
   end
 
   private

@@ -1,22 +1,8 @@
 <div id="<%= dom_id movie %>">
-  <p>
-    <strong>Title:</strong>
-    <%= movie.title %>
+  <td><%= movie.title %></td>
+  <td><%= movie.rating %></td>
   </p>
-
-  <p>
-    <strong>Rating:</strong>
-    <%= movie.rating %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= movie.description %>
-  </p>
-
-  <p>
-    <strong>Release date:</strong>
-    <%= movie.release_date %>
-  </p>
-
+  <td><%= movie.release_date %></td>
+  <td><%= link_to "Show this movie", movie %></td>
+  </tr>
 </div>

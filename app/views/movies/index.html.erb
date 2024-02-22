@@ -1,14 +1,47 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Movies</h1>
-
+<% 
+def toggle_dir
+  params[:dir] == "asc" ? "desc" : (params[:dir] == "desc" ? "" : "asc")
+end
+%>
 <div id="movies">
-  <% @movies.each do |movie| %>
+  <table>
+    <% if session.has_key?(:lastdir) && session.has_key?(:lastsort) && !params.has_key?(:dir)%>
+      <% if session[:lastdir] == "asc"%>
+        <tr bgcolor="#00ff00">
+      <% elsif session[:lastdir] == "desc"%>
+        <tr bgcolor="#ff0000">
+      <% else %>
+        <tr>
+      <% end %>
+    <% elsif params[:dir] == "" || !params.has_key?(:dir)%>
+      <tr>
+    <% else %>
+      <% if session[:lastdir] == "asc"%>
+        <tr bgcolor="#00ff00">
+      <% elsif session[:lastdir] == "desc"%>
+        <tr bgcolor="#ff0000">
+      <% else %>
+        <tr>
+      <% end %>  
+    <% end %>
+      <th><%= link_to params[:dir] == "asc" && params[:sort] == "title" ? "Title(A)" : (params[:dir] == "desc"  && params[:sort] == "title" ? "Title(D)" : "Title") , 
+        :sort => "title", 
+        :dir => toggle_dir %></th>
+      <th><%= link_to params[:dir] == "asc" && params[:sort] == "rating" ? "Rating(A)" : (params[:dir] == "desc"  && params[:sort] == "rating" ? "Rating(D)" : "Rating"),
+        :sort => "rating",
+        :dir => toggle_dir %></th>
+      <th><%= link_to params[:dir] == "asc" && params[:sort] == "release_date" ? "Release Date(A)" : (params[:dir] == "desc" && params[:sort] == "release_date" ? "Release Date(D)" : "Release Date"), 
+        :sort => "release_date", 
+        :dir => toggle_dir %></th>
+      <th>Link</th>
+    </tr>
+  <% @movies.each_with_index do |movie, index| %>
     <%= render movie %>
-    <p>
-      <%= link_to "Show this movie", movie %>
-    </p>
   <% end %>
+  </table>
 </div>
 
 <%= link_to "New movie", new_movie_path %>
